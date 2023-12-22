@@ -24,6 +24,7 @@
   margin: 5px;
   padding: 2px;
   width: 200px;
+  height: 400px;
 }
 .res-card:hover {
   cursor: pointer;
@@ -78,4 +79,14 @@
 .cost {
   display: flex;
   justify-content: space-between;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.details {
+  padding: 10px;
+  border: 1px solid black;
 }
