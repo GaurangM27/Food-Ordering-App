@@ -2,35 +2,27 @@ import RestuarantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import useFetchRestaurants from "../utils/useFetchRestaurants";
 
 const Body = () => {
-  const [listOfRe, setListOfRe] = useState([]);
   const [filteredRes, setFilteredRes] = useState([]);
   const [searchText, setSearchText] = useState("");
 
+  const listOfRe = useFetchRestaurants();
+
   useEffect(() => {
-    fetchData();
-    console.log("useEffect called");
-  }, []);
+    setFilteredRes(listOfRe);
+  }, [listOfRe]);
 
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.4146305&lng=80.3644263&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await data.json();
-    console.log(json);
-    setListOfRe(
-      json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredRes(
-      json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-  };
-  //Conditional Rendering
+  const onlineStatus = useOnlineStatus();
 
-  return listOfRe.length === 0 ? (
-    <Shimmer />
-  ) : (
+  if (onlineStatus === false) return <h1>Looks Like You Are Offline!!</h1>;
+  if (listOfRe.length == 0) {
+    return <Shimmer />;
+  }
+
+  return (
     <div className="body">
       <div className="filter">
         <div className="search">
