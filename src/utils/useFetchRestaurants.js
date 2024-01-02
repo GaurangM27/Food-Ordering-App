@@ -12,8 +12,14 @@ const useFetchRestaurants = () => {
     const data = await fetch(RES_API);
     const json = await data.json();
     console.log(json);
+    let ind = 4;
+    if (json?.data?.cards[ind]?.card?.card?.gridElements === undefined) {
+      ind = 5;
+      console.log(ind);
+    }
     setResList(
-      json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[ind]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
     );
   };
 

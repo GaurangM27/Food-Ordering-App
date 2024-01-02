@@ -1,6 +1,7 @@
 import useFetchMenu from "../utils/useFetchMenu";
 import { useParams } from "react-router-dom";
 import Shimmer from "./Shimmer";
+import MenuCategory from "./MenuCategory";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
@@ -23,6 +24,7 @@ const RestaurantMenu = () => {
     arrNO = 2;
     console.log(arrNO);
   }
+  console.log("On current Page");
 
   const { itemCards } =
     resMenu?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[arrNO]
@@ -30,25 +32,30 @@ const RestaurantMenu = () => {
 
   console.log(itemCards);
 
+  const categories =
+    resMenu?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (arr) =>
+        arr.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+
+  console.log(categories);
+
   return (
-    <div className="menu">
-      <div className="name">
-        <h1>{name}</h1>
-        <h2>{avgRating} &#11088;</h2>
+    <div className="text-center">
+      <div className="flex justify-evenly mt-6">
+        <h1 className="font-bold text-2xl">{name}</h1>
+        <h2 className="">{avgRating} &#11088;</h2>
       </div>
-      <div className="cost">
-        <h3>{cuisines.join(", ")}</h3>
+      <div className="flex justify-evenly">
+        <h3 className="">{cuisines.join(", ")}</h3>
         <h3>{costForTwoMessage}</h3>
       </div>
-      <h2>Menu</h2>
-      <ul>
-        {itemCards.map((item) => (
-          <li key={item.card.info.id}>
-            {item.card.info.name} - Rs.
-            {item.card.info.price / 100 || item.card.info.defaultPrice / 100}
-          </li>
+      <div>
+        {categories.map((ct) => (
+          <MenuCategory cat={ct?.card?.card} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
