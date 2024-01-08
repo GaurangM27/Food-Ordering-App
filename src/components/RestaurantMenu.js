@@ -2,8 +2,10 @@ import useFetchMenu from "../utils/useFetchMenu";
 import { useParams } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import MenuCategory from "./MenuCategory";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
+  const [showIndex, setShowIndex] = useState(0);
   const { resId } = useParams();
 
   const resMenu = useFetchMenu(resId);
@@ -52,8 +54,13 @@ const RestaurantMenu = () => {
         <h3>{costForTwoMessage}</h3>
       </div>
       <div>
-        {categories.map((ct) => (
-          <MenuCategory cat={ct?.card?.card} />
+        {categories.map((ct, index) => (
+          <MenuCategory
+            key={ct?.card?.card?.title}
+            cat={ct?.card?.card}
+            showItems={index === showIndex ? true : false}
+            setShowIndex={() => setShowIndex(index)}
+          />
         ))}
       </div>
     </div>
