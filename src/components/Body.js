@@ -1,9 +1,10 @@
 import RestuarantCard, { withVegLabel } from "./RestaurantCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import useFetchRestaurants from "../utils/useFetchRestaurants";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [filteredRes, setFilteredRes] = useState([]);
@@ -12,6 +13,8 @@ const Body = () => {
   const listOfRe = useFetchRestaurants();
 
   const RestaurantCardVeg = withVegLabel(RestuarantCard);
+
+  const { loggedInInfo, setUserName } = useContext(UserContext);
 
   useEffect(() => {
     setFilteredRes(listOfRe);
@@ -60,6 +63,12 @@ const Body = () => {
           >
             Top Rated Restaurants
           </button>
+          <label className="mx-2">UserName :</label>
+          <input
+            className="border border-black mx-2 p-2"
+            value={loggedInInfo}
+            onChange={(e) => setUserName(e.target.value)}
+          />
         </div>
       </div>
       <div className="flex flex-wrap">
